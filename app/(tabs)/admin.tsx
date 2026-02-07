@@ -95,6 +95,27 @@ export default function AdminDashboardScreen() {
           </View>
         </View>
 
+        {/* Create Task */}
+        <TouchableOpacity
+          className="w-full py-4 rounded-full flex-row items-center justify-center mb-6"
+          style={{
+            backgroundColor: "#22c55e",
+            shadowColor: "#22c55e",
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.25,
+            shadowRadius: 12,
+            elevation: 6,
+            gap: 10,
+          }}
+          onPress={() => router.push("/(tabs)/create-task")}
+          activeOpacity={0.95}
+        >
+          <MaterialIcons name="add-circle" size={22} color="#ffffff" />
+          <Text className="text-base font-extrabold" style={{ color: "#ffffff" }}>
+            Create New Task
+          </Text>
+        </TouchableOpacity>
+
         {/* Child Ledger Section */}
         <View className="mb-8">
           <View className="flex-row items-center justify-between mb-4">

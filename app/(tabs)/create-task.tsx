@@ -28,7 +28,7 @@ export default function CreateTaskScreen() {
           borderColor: "#e6e2db",
         }}
       >
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
+        <TouchableOpacity onPress={() => router.replace("/(tabs)/admin")} activeOpacity={0.7}>
           <Text className="text-base font-medium" style={{ color: "#f4a825" }}>
             Cancel
           </Text>

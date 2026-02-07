@@ -64,12 +64,51 @@ export async function clickProfile(page: Page, profileName: string) {
 export async function clickBackButton(page: Page) {
   // Find the back button by its icon or aria-label
   // Since MaterialIcons might not have accessible labels, we'll use a more specific selector
-  const backButton = page.locator('button').filter({ hasText: /back/i }).or(
-    page.locator('[aria-label*="back" i]')
-  ).or(
-    page.locator('button').first() // Fallback to first button if no better selector
+  // Try to find MaterialIcons arrow-back button first
+  const arrowBackButton = page.locator('[class*="arrow-back"]').or(
+    page.locator('button').filter({ has: page.locator('text=/arrow-back|back/i') })
   );
-  await backButton.click();
+  
+  if (await arrowBackButton.count() > 0) {
+    await arrowBackButton.first().click();
+  } else {
+    // Fallback to other methods
+    const backButton = page.locator('button').filter({ hasText: /back/i }).or(
+      page.locator('[aria-label*="back" i]')
+    ).or(
+      page.locator('button').first() // Fallback to first button if no better selector
+    );
+    await backButton.first().click();
+  }
+  await waitForNavigation(page);
+}
+
+/**
+ * Click the admin back button specifically (the arrow-back icon in the admin header)
+ */
+export async function clickAdminBackButton(page: Page) {
+  // The admin back button is in a TouchableOpacity with a MaterialIcons arrow-back
+  // The button is in the header and contains an arrow-back icon
+  // We'll look for a clickable element near "Household Admin" text that contains the arrow icon
+  // First, wait for the admin page to load
+  await waitForText(page, 'TaskQuest Central');
+  
+  // Find the back button by looking for the TouchableOpacity/button that contains the arrow-back icon
+  // The icon is rendered with font-family: material, so we look for elements with that style
+  const backButton = page.locator('button, [role="button"], div[class*="TouchableOpacity"]').filter({
+    has: page.locator('div[style*="font-family: material"], div[class*="arrow-back"]')
+  }).first();
+  
+  // Alternative: find by position - it should be near "Household Admin" text
+  const householdAdminText = page.getByText('Household Admin');
+  const backButtonAlt = householdAdminText.locator('..').locator('button, [role="button"]').first();
+  
+  try {
+    await backButton.click({ timeout: 2000 });
+  } catch {
+    await backButtonAlt.click({ timeout: 2000 });
+  }
+  
   await waitForNavigation(page);
 }
 

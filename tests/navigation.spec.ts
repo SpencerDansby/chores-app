@@ -13,6 +13,7 @@ import {
   verifyPinIndicators,
   navigateToPinScreen,
   navigateToAdminDashboard,
+  clickAdminBackButton,
 } from './helpers';
 
 test.describe('Login Screen', () => {
@@ -332,5 +333,20 @@ test.describe('Admin Dashboard', () => {
     await expect(page.getByText('$85.25')).toBeVisible();
     await expect(page.getByText('+12% THIS MONTH')).toBeVisible();
     await expect(page.getByText('6 TASKS WAITING')).toBeVisible();
+  });
+
+  test('should navigate back to profiles screen from admin dashboard', async ({ page }) => {
+    await navigateToAdminDashboard(page);
+    
+    // Verify we're on admin dashboard
+    await expect(page.getByText('TaskQuest Central')).toBeVisible();
+    
+    // Click the back button in the admin header
+    await clickAdminBackButton(page);
+    
+    // Verify we're back on profiles screen
+    await waitForText(page, "Who's using TaskQuest?");
+    await expect(page.getByText("Who's using TaskQuest?")).toBeVisible();
+    await expect(page.getByText("Pick your profile to start your adventure")).toBeVisible();
   });
 });

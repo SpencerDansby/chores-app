@@ -5,6 +5,12 @@ import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AdminDashboardScreen() {
+  const handleBack = () => {
+    // Navigate back to profiles screen
+    // Use push to ensure we always go to profiles, avoiding navigation stack issues
+    router.push("/(tabs)/profiles");
+  };
+
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: "#f8fafc" }}>
       {/* Header */}
@@ -16,8 +22,11 @@ export default function AdminDashboardScreen() {
           <TouchableOpacity
             className="w-10 h-10 rounded-full items-center justify-center"
             style={{ backgroundColor: "rgba(244, 168, 37, 0.2)" }}
-            onPress={() => router.push("/(tabs)/profiles")}
+            onPress={handleBack}
             activeOpacity={0.7}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Go back to profiles"
           >
             <MaterialIcons name="arrow-back" size={24} color="#f4a825" />
           </TouchableOpacity>

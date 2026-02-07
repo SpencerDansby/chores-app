@@ -39,20 +39,37 @@ export default function SelectIconScreen() {
     router.push(`/(tabs)/create-task?selectedIcon=${selectedIcon}`);
   };
 
+  const handleClose = () => {
+    // Navigate back to create-task page using router.back()
+    // This properly closes the modal and returns to the previous screen
+    router.back();
+  };
+
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}>
       <TouchableOpacity
         className="flex-1"
         activeOpacity={1}
-        onPress={() => router.back()}
+        onPress={handleClose}
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Close modal"
+        style={{ pointerEvents: "auto" }}
       >
-        <View className="flex-1" />
+        <View className="flex-1" style={{ pointerEvents: "none" }} />
       </TouchableOpacity>
 
       {/* Bottom Sheet */}
       <View
-        className="bg-white rounded-t-[40px] shadow-2xl"
-        style={{ maxHeight: "90%", backgroundColor: "#ffffff" }}
+        className="bg-white rounded-t-[40px]"
+        style={{ 
+          maxHeight: "90%", 
+          backgroundColor: "#ffffff",
+          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+          elevation: 24,
+        }}
+        accessible={true}
+        accessibilityViewIsModal={true}
       >
         {/* Handle */}
         <View className="h-8 w-full items-center justify-center pt-2">
@@ -64,7 +81,7 @@ export default function SelectIconScreen() {
           <Text className="text-2xl font-bold tracking-tight flex-1" style={{ color: "#1c160d" }}>
             Select Task Icon
           </Text>
-          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
+          <TouchableOpacity onPress={handleClose} activeOpacity={0.7}>
             <MaterialIcons name="close" size={24} color="#9ca3af" />
           </TouchableOpacity>
         </View>
